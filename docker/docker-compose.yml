@@ -19,7 +19,7 @@ services:
         sed -i \"s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g\" ./docker/lemmy.hjson &&
         sed -i \"s/POSTGRES_USER/$POSTGRES_USER/g\" ./docker/lemmy.hjson &&
         sed -i \"s/POSTGRES_PWD/$POSTGRES_PWD/g\" ./docker/lemmy.hjson &&
-        sed -i \"s/HOSTNAME/$HOSTNAME/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/LEMMY_HOSTNAME/$LEMMY_HOSTNAME/g\" ./docker/lemmy.hjson &&
         sed -i \"s/SMTP_SERVER/$SMTP_SERVER/g\" ./docker/lemmy.hjson &&
         sed -i \"s/SMTP_LOGIN/$SMTP_LOGIN/g\" ./docker/lemmy.hjson &&
         sed -i \"s/SMTP_PASSWORD/$SMTP_PASSWORD/g\" ./docker/lemmy.hjson &&
@@ -36,7 +36,7 @@ services:
       - ADMIN_PASSWORD
       - POSTGRES_USER
       - POSTGRES_PWD
-      - HOSTNAME
+      - LEMMY_HOSTNAME
       - SMTP_SERVER
       - SMTP_LOGIN
 
