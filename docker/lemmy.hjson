@@ -6,15 +6,18 @@
   # release / stable version.
 
   setup: {
-    admin_username: "lemmy"
-    admin_password: "lemmylemmy"
-    site_name: "lemmy-dev"
+    admin_username: "ADMIN_USERNAME"
+    admin_password: "ADMIN_PASSWORD"
+    site_name: "Lemmy"
   }
   database: {
     host: postgres
+    database: "lemmy"
+    user: "POSTGRES_USER"
+    password: "POSTGRES_PWD"
   }
 
-  hostname: "localhost"
+  hostname: "HOSTNAME"
   bind: "0.0.0.0"
   port: 8536
 
@@ -22,6 +25,19 @@
     url: "http://pictrs:8080/"
     # api_key: "API_KEY"
   }
+
+  email: {
+      # Hostname and port of the smtp server
+      smtp_server: "SMTP_SERVER"
+      # Login name for smtp server
+      smtp_login: "SMTP_LOGIN"
+      # Password to login to the smtp server
+      smtp_password: "SMTP_PASSWORD"
+      # Address to send emails from, eg "noreply@your-instance.com"
+      smtp_from_address: "SMTP_LOGIN"
+      # Whether or not smtp connections should use tls. Can be none, tls, or starttls
+      tls_type: "starttls"
+    }
 
   #opentelemetry_url: "http://otel:4137"
 }

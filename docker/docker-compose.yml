@@ -7,6 +7,39 @@ x-logging: &default-logging
     max-file: 4
 
 services:
+  git-checkout:
+    image: bitnami/git:latest
+    working_dir: /temp
+    command: >
+      bash -c " 
+        git clone https://github.com/axeleroy/lemmy .git &&
+        cd lemmy &&
+        echo 'Copying ./docker/lemmy.hjson ...' &&
+        sed -i \"s/ADMIN_USERNAME/$ADMIN_USERNAME/g\" ./docker/lemmy.hson &&
+        sed -i \"s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g\" ./docker/lemmy.hson &&
+        sed -i \"s/POSTGRES_USER/$POSTGRES_USER/g\" ./docker/lemmy.hson &&
+        sed -i \"s/POSTGRES_PWD/$POSTGRES_PWD/g\" ./docker/lemmy.hson &&
+        sed -i \"s/HOSTNAME/$HOSTNAME/g\" ./docker/lemmy.hson &&
+        sed -i \"s/SMTP_SERVER/$SMTP_SERVER/g\" ./docker/lemmy.hson &&
+        sed -i \"s/SMTP_LOGIN/$SMTP_LOGIN/g\" ./docker/lemmy.hson &&
+        sed -i \"s/SMTP_PASSWORD/$SMTP_PASSWORD/g\" ./docker/lemmy.hson &&
+        cp -R ./docker/lemmy.hjson /lemmy-config/config.hjson &&
+        # echo 'Copying ./docker/nginx.config ...' &&
+        # cp -R ./docker/nginx.conf /nginx-config &&
+        echo 'Copying done!'
+      "
+    volumes:
+      - lemmy-config:/lemmy-config
+      # - nginx:/alertmanager_config
+    environment:
+      - ADMIN_USERNAME
+      - ADMIN_PASSWORD
+      - POSTGRES_USER
+      - POSTGRES_PWD
+      - HOSTNAME
+      - SMTP_SERVER
+      - SMTP_LOGIN
+
   proxy:
     image: nginx:1-alpine
     ports:
@@ -22,16 +55,12 @@ services:
       - pictrs
       - lemmy-ui
     logging: *default-logging
+    networks:
+      - lemmy-net
+      - bunkerweb-net
 
   lemmy:
-    # image: dessalines/lemmy:0.18.0
-    # use this to build your local lemmy server image for development
-    # run docker compose up --build
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile
-      # args:
-      #   RUST_RELEASE_MODE: release
+    image: dessalines/lemmy:0.18.0
     # this hostname is used in nginx reverse proxy and also for lemmy ui to connect to the backend, do not change
     hostname: lemmy
     restart: always
@@ -39,20 +68,16 @@ services:
       - RUST_LOG="warn,lemmy_server=debug,lemmy_api=debug,lemmy_api_common=debug,lemmy_api_crud=debug,lemmy_apub=debug,lemmy_db_schema=debug,lemmy_db_views=debug,lemmy_db_views_actor=debug,lemmy_db_views_moderator=debug,lemmy_routes=debug,lemmy_utils=debug,lemmy_websocket=debug"
       - RUST_BACKTRACE=full
     volumes:
-      - ./lemmy.hjson:/config/config.hjson:Z
+      - lemmy-config:/config
     depends_on:
       - postgres
       - pictrs
     logging: *default-logging
+    networks:
+      - lemmy-net
 
   lemmy-ui:
     image: dessalines/lemmy-ui:0.18.0
-    # use this to build your local lemmy ui image for development
-    # run docker compose up --build
-    # assuming lemmy-ui is cloned besides lemmy directory
-    # build:
-    #   context: ../../lemmy-ui
-    #   dockerfile: dev.dockerfile
     environment:
       # this needs to match the hostname defined in the lemmy service
       - LEMMY_UI_LEMMY_INTERNAL_HOST=lemmy:8536
@@ -65,6 +90,8 @@ services:
     restart: always
     logging: *default-logging
     init: true
+    networks:
+      - lemmy-net
 
   pictrs:
     image: asonix/pictrs:0.4.0-beta.19
@@ -84,9 +111,11 @@ services:
       - PICTRS__MEDIA__GIF__MAX_FRAME_COUNT=400
     user: 991:991
     volumes:
-      - ./volumes/pictrs:/mnt:Z
+      - pictrs:/mnt:Z
     restart: always
     logging: *default-logging
+    networks:
+      - lemmy-net
 
   postgres:
     image: postgres:15-alpine
@@ -108,14 +137,23 @@ services:
         "-c",
         "track_activity_query_size=1048576",
       ]
-    ports:
-      # use a different port so it doesnt conflict with potential postgres db running on the host
-      - "5433:5432"
     environment:
-      - POSTGRES_USER=lemmy
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${POSTGRES_USER:-lemmy}
+      - POSTGRES_PASSWORD=${POSTGRES_PWD:-password}
       - POSTGRES_DB=lemmy
     volumes:
-      - ./volumes/postgres:/var/lib/postgresql/data:Z
+      - postgres:/var/lib/postgresql/data:Z
     restart: always
     logging: *default-logging
+
+volumes:
+  lemmy-config: {}
+  pictrs: {}
+  postgres: {}
+
+networks:
+  lemmy-net:
+    name: lemmy-net
+  bunkerweb-net:
+    name: bunkerweb-net
+    external: true
