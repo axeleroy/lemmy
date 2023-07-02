@@ -13,7 +13,7 @@ services:
     command: >
       bash -c " 
         git clone https://github.com/axeleroy/lemmy .git &&
-        cd lemmy &&
+        cd .git &&
         echo 'Copying ./docker/lemmy.hjson ...' &&
         sed -i \"s/ADMIN_USERNAME/$ADMIN_USERNAME/g\" ./docker/lemmy.hson &&
         sed -i \"s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g\" ./docker/lemmy.hson &&
