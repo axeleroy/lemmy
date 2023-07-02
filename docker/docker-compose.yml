@@ -15,14 +15,14 @@ services:
         git clone https://github.com/axeleroy/lemmy .git &&
         cd .git &&
         echo 'Copying ./docker/lemmy.hjson ...' &&
-        sed -i \"s/ADMIN_USERNAME/$ADMIN_USERNAME/g\" ./docker/lemmy.hson &&
-        sed -i \"s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g\" ./docker/lemmy.hson &&
-        sed -i \"s/POSTGRES_USER/$POSTGRES_USER/g\" ./docker/lemmy.hson &&
-        sed -i \"s/POSTGRES_PWD/$POSTGRES_PWD/g\" ./docker/lemmy.hson &&
-        sed -i \"s/HOSTNAME/$HOSTNAME/g\" ./docker/lemmy.hson &&
-        sed -i \"s/SMTP_SERVER/$SMTP_SERVER/g\" ./docker/lemmy.hson &&
-        sed -i \"s/SMTP_LOGIN/$SMTP_LOGIN/g\" ./docker/lemmy.hson &&
-        sed -i \"s/SMTP_PASSWORD/$SMTP_PASSWORD/g\" ./docker/lemmy.hson &&
+        sed -i \"s/ADMIN_USERNAME/$ADMIN_USERNAME/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/ADMIN_PASSWORD/$ADMIN_PASSWORD/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/POSTGRES_USER/$POSTGRES_USER/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/POSTGRES_PWD/$POSTGRES_PWD/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/HOSTNAME/$HOSTNAME/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/SMTP_SERVER/$SMTP_SERVER/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/SMTP_LOGIN/$SMTP_LOGIN/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/SMTP_PASSWORD/$SMTP_PASSWORD/g\" ./docker/lemmy.hjson &&
         cp -R ./docker/lemmy.hjson /lemmy-config/config.hjson &&
         echo 'Copying ./docker/nginx.config ...' &&
         cp -R ./docker/nginx.conf /nginx-config &&
@@ -119,7 +119,7 @@ services:
 
   postgres:
     image: postgres:15-alpine
-    # this needs to match the database host in lemmy.hson
+    # this needs to match the database host in lemmy.hjson
     # Tune your settings via
     # https://pgtune.leopard.in.ua/#/
     # You can use this technique to add them here
