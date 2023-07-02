@@ -157,6 +157,7 @@ volumes:
 networks:
   lemmy-net:
     name: lemmy-net
+    driver: bridge
   bunkerweb-net:
     name: bunkerweb-net
     external: true
