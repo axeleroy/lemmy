@@ -60,7 +60,7 @@ services:
       - bunkerweb-net
 
   lemmy:
-    image: dessalines/lemmy:0.18.3
+    image: dessalines/lemmy:0.18.4
     # this hostname is used in nginx reverse proxy and also for lemmy ui to connect to the backend, do not change
     hostname: lemmy
     restart: always
@@ -77,7 +77,7 @@ services:
       - lemmy-net
 
   lemmy-ui:
-    image: dessalines/lemmy-ui:0.18.3
+    image: dessalines/lemmy-ui:0.18.4
     environment:
       # this needs to match the hostname defined in the lemmy service
       - LEMMY_UI_LEMMY_INTERNAL_HOST=lemmy:8536
