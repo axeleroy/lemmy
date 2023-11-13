@@ -26,6 +26,8 @@ services:
         cp -R ./docker/lemmy.hjson /lemmy-config/config.hjson &&
         echo 'Copying ./docker/nginx.config ...' &&
         cp -R ./docker/nginx.conf /nginx-config &&
+        echo 'Copying ./docker/proxy_params ...' &&
+        cp -R ./docker/proxy_params /nginx-config &&
         echo 'Copying done!'
       "
     volumes:
