@@ -42,12 +42,12 @@ services:
 
   proxy:
     image: nginx:1-alpine
-    ports:
+    expose:
       # actual and only port facing any connection from outside
       # Note, change the left number if port 1236 is already in use on your system
       # You could use port 80 if you won't use a reverse proxy
-      - "1236:1236"
-      - "8536:8536"
+      - 1236
+      - 8536
     volumes:
       - nginx-config:/etc/nginx/
     restart: always
@@ -72,8 +72,8 @@ services:
       - "bunkerweb.BAD_BEHAVIOR_THRESHOLD=20"
       - "bunkerweb.BAD_BEHAVIOR_COUNT_TIME=120"
       - >
-         CUSTOM_CONF_MODSEC_CRS=
-        SecAction \
+        CUSTOM_CONF_MODSEC_CRS=
+          SecAction \
           "id:900220,\
           phase:1,\
           nolog,\
