@@ -56,8 +56,30 @@ services:
       - lemmy-ui
     logging: *default-logging
     networks:
-      - lemmy-net
-      - bunkerweb-net
+      lemmy-net:
+      bw-services:
+        aliases:
+          - lemmy
+    labels:
+      - "bunkerweb.SERVER_NAME=lemmy.blackeco.com"
+      - "bunkerweb.USE_REVERSE_PROXY=yes"
+      - "bunkerweb.REVERSE_PROXY_URL=/"
+      - "bunkerweb.REVERSE_PROXY_HOST=http://lemmy:1236"
+      - "bunkerweb.USE_LIMIT_REQ=no"
+      - "bunkerweb.REVERSE_PROXY_WS=yes"
+      - "bunkerweb.WHITELIST_URI=/inbox /nodeinfo/2.0.json"
+      - "bunkerweb.BAD_BEHAVIOR_BAN_TIME=300"
+      - "bunkerweb.BAD_BEHAVIOR_THRESHOLD=20"
+      - "bunkerweb.BAD_BEHAVIOR_COUNT_TIME=120"
+      - >
+         CUSTOM_CONF_MODSEC_CRS=
+        SecAction \
+          "id:900220,\
+          phase:1,\
+          nolog,\
+          pass,\
+          t:none,\
+          setvar:'tx.allowed_request_content_type=|application/x-www-form-urlencoded| |multipart/form-data| |multipart/related| |text/xml| |application/xml| |application/soap+xml| |application/json| |application/cloudevents+json| |application/cloudevents-batch+json| |application/activity+json| |application/ld+json|'"
 
   lemmy:
     image: dessalines/lemmy:0.18.5
@@ -158,6 +180,6 @@ networks:
   lemmy-net:
     name: lemmy-net
     driver: bridge
-  bunkerweb-net:
-    name: bunkerweb-net
+  bw-services:
+    name: bw-services
     external: true
