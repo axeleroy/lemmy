@@ -43,7 +43,7 @@ services:
       - SMTP_LOGIN
 
   proxy:
-    image: nginx:1-alpine
+    image: docker.io/library/nginx
     expose:
       # actual and only port facing any connection from outside
       # Note, change the left number if port 1236 is already in use on your system
@@ -61,12 +61,12 @@ services:
       lemmy-net:
       bw-services:
         aliases:
-          - lemmy
+          - lemmy-proxy
     labels:
       - "bunkerweb.SERVER_NAME=lemmy.blackeco.com"
       - "bunkerweb.USE_REVERSE_PROXY=yes"
       - "bunkerweb.REVERSE_PROXY_URL=/"
-      - "bunkerweb.REVERSE_PROXY_HOST=http://lemmy:1236"
+      - "bunkerweb.REVERSE_PROXY_HOST=http://lemmy-proxy:1236"
       - "bunkerweb.USE_LIMIT_REQ=no"
       - "bunkerweb.REVERSE_PROXY_WS=yes"
       - "bunkerweb.WHITELIST_URI=/inbox /nodeinfo/2.0.json"
@@ -118,7 +118,7 @@ services:
       - lemmy-net
 
   pictrs:
-    image: asonix/pictrs:0.4.0-beta.19
+    image: asonix/pictrs:0.4.3
     # this needs to match the pictrs url in lemmy.hjson
     hostname: pictrs
     # we can set options to pictrs like this, here we set max. image size and forced format for conversion
