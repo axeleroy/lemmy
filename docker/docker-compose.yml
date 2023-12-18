@@ -167,6 +167,8 @@ services:
         "auto_explain.log_analyze=true",
         "-c",
         "track_activity_query_size=1048576",
+        "-c",
+        "synchronous_commit=off",
       ]
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-lemmy}
