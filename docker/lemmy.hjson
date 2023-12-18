@@ -15,6 +15,7 @@
     database: "lemmy"
     user: "POSTGRES_USER"
     password: "POSTGRES_PWD"
+    pool_size: DB_POOL_SIZE
   }
 
   hostname: "LEMMY_HOSTNAME"
