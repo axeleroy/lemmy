@@ -23,6 +23,7 @@ services:
         sed -i \"s/SMTP_SERVER/$SMTP_SERVER/g\" ./docker/lemmy.hjson &&
         sed -i \"s/SMTP_LOGIN/$SMTP_LOGIN/g\" ./docker/lemmy.hjson &&
         sed -i \"s/SMTP_PASSWORD/$SMTP_PASSWORD/g\" ./docker/lemmy.hjson &&
+        sed -i \"s/DB_POOL_SIZE/${DB_POOL_SIZE:-20}/g\" ./docker/lemmy.hjson &&
         cp -R ./docker/lemmy.hjson /lemmy-config/config.hjson &&
         echo 'Copying ./docker/nginx.config ...' &&
         cp -R ./docker/nginx.conf /nginx-config &&
