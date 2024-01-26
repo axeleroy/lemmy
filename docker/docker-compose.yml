@@ -90,7 +90,7 @@ services:
       - homepage.href=https://lemmy.blackeco.com
 
   lemmy:
-    image: dessalines/lemmy:0.19.2
+    image: dessalines/lemmy:${LEMMY_VERSION}
     # this hostname is used in nginx reverse proxy and also for lemmy ui to connect to the backend, do not change
     hostname: lemmy
     restart: always
@@ -107,7 +107,7 @@ services:
       - lemmy-net
 
   lemmy-ui:
-    image: dessalines/lemmy-ui:0.19.2
+    image: dessalines/lemmy-ui:${LEMMY_UI_VERSION}
     environment:
       # this needs to match the hostname defined in the lemmy service
       - LEMMY_UI_LEMMY_INTERNAL_HOST=lemmy:8536
@@ -124,7 +124,7 @@ services:
       - lemmy-net
 
   pictrs:
-    image: asonix/pictrs:0.5.0
+    image: asonix/pictrs:${PICTRS_VERSION}
     # this needs to match the pictrs url in lemmy.hjson
     hostname: pictrs
     # we can set options to pictrs like this, here we set max. image size and forced format for conversion
