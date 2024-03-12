@@ -71,10 +71,12 @@ services:
       - "bunkerweb.USE_LIMIT_REQ=no"
       - "bunkerweb.REVERSE_PROXY_WS=yes"
       - >
-        bunkerweb.WHITELIST_URI=\/inbox \/u\/[A-z0-9]+\/inbox \/.well-known/.* \/nodeinfo\/2.0.json
+        bunkerweb.WHITELIST_URI=\/inbox \/u\/[A-z0-9]+\/inbox \/.well-known\/.* \/nodeinfo\/2.0.json
       - "bunkerweb.BAD_BEHAVIOR_BAN_TIME=300"
       - "bunkerweb.BAD_BEHAVIOR_THRESHOLD=20"
       - "bunkerweb.BAD_BEHAVIOR_COUNT_TIME=120"
+      - >
+        bunkerweb.WHITELIST_USER_AGENT=android:io\.syncapps\.lemmy_sync.*
       - >
         bunkerweb.CUSTOM_CONF_MODSEC_CRS=
           SecAction \
