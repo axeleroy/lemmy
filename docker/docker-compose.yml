@@ -144,7 +144,7 @@ services:
       - PICTRS__UPGRADE__CONCURRENCY=32
     user: 991:991
     volumes:
-      - pictrs:/mnt:Z
+      - /mnt/storage/pictrs:/mnt:Z
     restart: always
     logging: *default-logging
     networks:
