@@ -64,7 +64,7 @@ services:
         aliases:
           - lemmy-proxy
     labels:
-      - "bunkerweb.SERVER_NAME=${$LEMMY_HOSTNAME}"
+      - "bunkerweb.SERVER_NAME=${LEMMY_HOSTNAME:-}"
       - "bunkerweb.USE_REVERSE_PROXY=yes"
       - "bunkerweb.REVERSE_PROXY_URL=/"
       - "bunkerweb.REVERSE_PROXY_HOST=http://lemmy-proxy:1236"
