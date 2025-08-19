@@ -64,7 +64,7 @@ services:
         aliases:
           - lemmy-proxy
     labels:
-      - "bunkerweb.SERVER_NAME=lemmy.blackeco.com"
+      - "bunkerweb.SERVER_NAME=${$LEMMY_HOSTNAME}"
       - "bunkerweb.USE_REVERSE_PROXY=yes"
       - "bunkerweb.REVERSE_PROXY_URL=/"
       - "bunkerweb.REVERSE_PROXY_HOST=http://lemmy-proxy:1236"
@@ -86,11 +86,7 @@ services:
           pass,\
           t:none,\
           setvar:'tx.allowed_request_content_type=|application/x-www-form-urlencoded| |multipart/form-data| |multipart/related| |text/xml| |application/xml| |application/soap+xml| |application/json| |application/cloudevents+json| |application/cloudevents-batch+json| |application/activity+json| |application/ld+json|'"
-      - homepage.group=Services
-      - homepage.name=Lemmy
-      - homepage.icon=lemmy
-      - homepage.href=https://lemmy.blackeco.com
-
+      
   lemmy:
     image: dessalines/lemmy:${LEMMY_VERSION}
     # this hostname is used in nginx reverse proxy and also for lemmy ui to connect to the backend, do not change
@@ -114,7 +110,7 @@ services:
       # this needs to match the hostname defined in the lemmy service
       - LEMMY_UI_LEMMY_INTERNAL_HOST=lemmy:8536
       # set the outside hostname here
-      - LEMMY_UI_LEMMY_EXTERNAL_HOST=localhost:1236
+      - LEMMY_UI_LEMMY_EXTERNAL_HOST=${LEMMY_HOSTNAME:-localhost}:1236
       - LEMMY_UI_HTTPS=false
       # - LEMMY_UI_DEBUG=true
     depends_on:
